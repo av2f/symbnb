@@ -5,6 +5,7 @@
         <title>SymBnB - {% block title %}Welcome!{% endblock %}</title>
 
         <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/app.css">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
@@ -15,8 +16,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ path('homepage') }}">Acceuil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('ads_index') }}">Annonces</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
