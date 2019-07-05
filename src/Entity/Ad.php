@@ -15,6 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * HasLifecycleCallbacks sert à mettre en place les PostLoad, PrePersist, PostPersist,
  * PreRemove, PostRemove,
  * PreUpdate or PostUpdate
+ * 
+ * @uniqueEntity(
+ *  fields={"title"},
+ *  message="Une autre annonce possède déjà ce titre, merci de le modifier"
+ * )
  */
  
 class Ad
@@ -69,6 +74,7 @@ class Ad
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="ad", orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $images;
 
