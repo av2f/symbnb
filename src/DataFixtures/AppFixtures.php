@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use Faker\Factory;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Image;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -25,6 +26,23 @@ class AppFixtures extends Fixture
         // $manager->persist($product);
 
         $faker=Factory::create('fr_FR');
+
+        $adminRole= new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+
+        $adminUser=new User;
+        $adminUser->setFirstName('Fred')
+                ->setLastName('Parmentier')
+                ->setEmail('fparmentier@symfony.com')
+                ->setHash($this->encoder->encodePassword($adminUser,'password'))
+                ->setPicture('http://placehold.it/75x75')
+                ->setIntroduction($faker->sentence())
+                ->setDescription('<p>'.join('</p><p>',$faker->paragraphs(3)).'</p>')
+                ->addUserRole($adminRole);
+
+        $manager->persist($adminUser);
+
 
         // Nous gérons les utilisateurs
         $users=[];
