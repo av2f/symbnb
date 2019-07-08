@@ -14,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Form\FormError;
 
 class AccountController extends AbstractController
 {
@@ -119,14 +120,57 @@ class AccountController extends AbstractController
      *
      * @return Response
      */
-    public function  updatePassword()
+    public function  updatePassword(Request $request, UserPasswordEncoderInterface $encoder, ObjectManager $manager)
     {
         $passwordUpdate=new PasswordUpdate();
 
+        $user=$this->getUser();
+
         $form=$this->createForm(PasswordUpdateType::class, $passwordUpdate);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            
+            //1. Vérifier que le old password soit le même que celui dans la base
+            if (!password_verify($passwordUpdate->getOldPassword(), $user->getHash())) {
+                // Gérer l'erreur
+                $form->get('oldPassword')->addError(new FormError("Le mot de passe saisi n'est pas le mot de passe actuel"));
+            }
+            else {
+                $newPassword=$passwordUpdate->getNewPassword();
+                $hash=$encoder->encodePassword($user, $newPassword);
+                $user->setHash($hash);
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    "le mot de passe a été modifié avec succès"
+                );
+
+                return $this->redirectToRoute('homepage');
+            }
+
+        }
 
         return $this->render('account/password.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * Permet d'afficher l'utilisateur connecté
+     * 
+     * @Route("/account", name="account_index")
+     *
+     * @return Response
+     */
+    public function myAccount(){
+        return $this->render('user/index.html.twig', [
+            'user'=>$this->getUser(),
+        ]);
+
     }
 }

@@ -50,31 +50,22 @@
 
         </div>
         <div class="col">
+            {% set a=ad.author %}
             <div class="row">
-                <div class="col-4">
-                    <img src="http://placehold.it/64x64" alt="Avatar de Joseph">
+                <div class="col-3">
+                    <!-- fullName a été créé dans l'entity User - function getFullName() -->
+                    <a href="{{ path('user_show', {'slug': a.slug} ) }}">
+                        <img src="{{ a.picture }}" class="avatar avatar-medium" alt="Avatar de {{a.fullName}}">
+                    </a>
                 </div>
                 <div class="col">
-                    <h3>Joseph Dupond</h3>
-                    <span class="badge badge-primary">3 annonces</span>
+                    <a href="{{ path('user_show', {'slug': a.slug} ) }}">
+                        <h3>{{a.fullName }}</h3>
+                    </a>
+                    <span class="badge badge-primary">{{ a.ads | length }} annonces</span>
                 </div>
             </div>
-            <p>
-                Nostrud incididunt sit adipisicing magna laboris aliqua. 
-                Pariatur quis id excepteur aliquip sint. Ullamco enim fugiat eiusmod culpa Lorem culpa tempor sit esse. 
-                Voluptate est laboris magna sunt veniam laborum cillum est commodo laborum. 
-                Reprehenderit culpa ullamco eiusmod in.
-            </p>
-            <p>
-                Elit commodo reprehenderit fugiat eu minim dolore amet.
-                Eiusmod ipsum minim incididunt cupidatat nisi aute non. Eiusmod nulla exercitation sint adipisicing.
-                Laboris id exercitation dolor exercitation anim. Fugiat ad duis ut sunt nisi non.
-            </p>
-            <p>
-                Est et nisi culpa eu aute eiusmod cillum adipisicing cillum officia. 
-                Fugiat pariatur laboris culpa Lorem. Nostrud occaecat labore consequat laboris pariatur sint est. 
-                Occaecat adipisicing nisi tempor qui laboris labore nisi aliqua aliquip proident do. Amet ut exercitation cupidatat ipsum excepteur ea. Duis reprehenderit consectetur veniam amet deserunt in consequat minim proident anim mollit. Commodo cupidatat commodo non consequat proident dolore sit aliqua cupidatat anim ex adipisicing.
-            </p>
+            {{ a.description | raw }}
         </div>
     </div>
 </div>

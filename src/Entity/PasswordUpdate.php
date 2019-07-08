@@ -10,14 +10,14 @@ class PasswordUpdate
     /**
      * @Assert\Length(
      *  min=8,
-     *  message="Votre mot de passe doit faire au moins 8 caractères"
+     *  minMessage="Votre mot de passe doit faire au moins 8 caractères"
      * )
      */
     private $newPassword;
 
     /**
      * @Assert\EqualTo(
-     *  PropertyPath="newPassord",
+     *  propertyPath="newPassword",
      *  message="Vous n'avez pas correctement confirmé votre nouveau mot de passe"
      * )
      */

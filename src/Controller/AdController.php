@@ -48,6 +48,9 @@ class AdController extends AbstractController
                     $manager->persist($image);
                 }
                 
+                // $this->getUser() permet de récupérer l'utilisateur connecté
+                $ad->setAuthor($this->getUser());
+                
                 $manager->persist($ad);
                 $manager->flush();
 
