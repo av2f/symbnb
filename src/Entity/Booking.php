@@ -4,8 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+// Ajout des fonctions prePersist et getDuration à la fin
+// la fonction prePersist est liée à HasLifecycleCallbacks
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Booking
 {
@@ -52,6 +56,29 @@ class Booking
      * @ORM\Column(type="text")
      */
     private $comment;
+
+    /**
+     * Callback à chaque fois que l'on créé une réservation
+     * 
+     * @ORM\prePersist()
+     *
+     * @return void
+     */
+    public function prePersist() {
+        if (empty($this->createdAt)){
+            $this->createdAt=new \DateTime();
+        }
+
+        if(empty($this->amount)) {
+            // Prix de l'annonce * nombre de nuit
+            $this->amount=$this->ad->getPrice() * $this->getDuration();
+        }
+    }
+
+    public function getDuration() {
+        $diff=$this->endDate->diff($this->startDate);
+        return $diff->days;
+    }
 
     public function getId(): ?int
     {
