@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 // Ajout des fonctions prePersist et getDuration à la fin
 // la fonction prePersist est liée à HasLifecycleCallbacks
@@ -34,11 +35,17 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date(
+     * message="Attention la date doit être au bon format"
+     * )
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Date(
+     * message="Attention la date doit être au bon format"
+     * )
      */
     private $endDate;
 
@@ -73,6 +80,47 @@ class Booking
             // Prix de l'annonce * nombre de nuit
             $this->amount=$this->ad->getPrice() * $this->getDuration();
         }
+    }
+    public function isBookableDates(){
+        // 1) Il faut connaitre les date qui sont impossibles pour l'annonce
+        $notAvailableDays=$this->ad->getNotAvailableDays();
+        // 2) Il faut comparer les dates choisies avec les dates impossibles
+        $bookingDays=$this->getDays();
+
+        // fonction anonyme
+        $formatDay=function($day){
+            return $day->format('Y-m-d'); 
+         };
+        
+        // tableau des chaines de caractères de mes journées
+        $days=array_map($formatDay, $bookingDays);
+
+        $notAvailable=array_map($formatDay, $notAvailableDays);
+
+         foreach($days as $day){
+             if(array_search($day, $notAvailable) !== false) return false;
+         }
+
+         return true;
+    }
+
+    /**
+     * Cette fonction va permettre de récupérer un tableau des journées qui correspondent à ma réservation
+     *
+     * @return array un tableau d'objets DateTime représentant les jours de la réservation
+     */
+    public function getDays(){
+        $resultat=range(
+            $this->startDate->getTimestamp(),
+            $this->endDate->getTimestamp(),
+            24*60*60
+        );
+        // voir explications de array_map & array_merge dans Ad.php
+        $days=array_map(function($dayTimestamp){
+            return new \DateTime(date('Y-m-d', $dayTimestamp));
+        }, $resultat);
+
+        return $days;
     }
 
     public function getDuration() {
