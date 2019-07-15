@@ -8,25 +8,31 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\Form\DataTransformer\FrenchToDateTimeTransformer;
 
 class BookingType extends ApplicationType
 // rappel : ApplicationType contient la fonction getConfiguration et herite de AbstractType
 
 {
+    private $transformer;
+    public function __construct(FrenchToDateTimeTransformer $transformer){
+        $this->transformer = $transformer;
+    }
+    
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
                 'startDate',
-                DateType::class,
-                $this->getConfiguration("Date d'arrivée", "Date à laquelle vous arrivez",
-                ["widget"=>"single_text"])
+                TextType::class,
+                $this->getConfiguration("Date d'arrivée", "Date à laquelle vous arrivez")
             )
             ->add(
                 'endDate',
-                DateType::class,
-                $this->getConfiguration("Date de départ", "Date à laquelle vous partez",
-                ["widget"=>"single_text"])
+                TextType::class,
+                $this->getConfiguration("Date de départ", "Date à laquelle vous partez")
             )
             // false pour label = pas de label
             ->add(
@@ -37,6 +43,9 @@ class BookingType extends ApplicationType
                 ] )
             )
         ;
+
+        $builder->get('startDate')->addModelTransformer($this->transformer);
+        $builder->get('endDate')->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)
