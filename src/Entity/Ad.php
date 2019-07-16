@@ -115,6 +115,19 @@ class Ad
         }
     }
 
+    public function getAvgRatings(){
+        // Calculer la somme des notations
+        // array_reduce réduit iterativement un tableau, toArray() permet de convertir
+        // un array_collection en un tableau
+        $sum=array_reduce($this->comments->toArray(), function($total,$comments) {
+            return $total + $comments->getRating();
+        }, 0);
+        // faire la division pour avoir la moyenne
+        if (count($this->comments)>0) return $sum/count($this->comments);
+
+        return 0;
+    }
+
     /**
      * Permet d'obtenir un tableau des jours qui ne sont pas disponibles pour cette annonce
      *

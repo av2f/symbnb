@@ -1,0 +1,10 @@
+<span class="rating">
+    {% for i in 1..5 %}
+        {# rating = paramètre qu'il faut déclarer en appelant le twig #}
+        {% if i<= rating %}
+            <i class="fas fa-star"></i>
+        {% else %}
+            <i class="far fa-star"></i>
+        {% endif %}
+    {% endfor %}
+</span>
