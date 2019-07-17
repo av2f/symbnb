@@ -9,7 +9,7 @@
         <h1>{{ ad.title }}</h1>
         <p>{{ ad.introduction }}</p>
         <p class="h2">
-            <strong>{{ ad.rooms }} chambres</strong> pour <strong>{{ ad.price }}&euro;</strong>
+            <strong>{{ ad.rooms }} chambres</strong> pour <strong>{{ ad.price|number_format(2,',',' ') }} &euro;</strong>
             par nuit
         </p>
         <a href="{{ path('booking_create', {'slug': ad.slug }) }}" class="btn btn-primary">Réserver</a>
@@ -75,11 +75,11 @@
 
                 {% for comment in ad.comments %}
                     <div class="bg-light rounded mb-3 py-3 px-3">
-                        <strong>{{ comment.author.fullName }}</strong> a dit :
+                        <strong>{{ comment.author.firstName }}</strong> a dit :
                         <blockquote>
                             {{ comment.content }}
                         </blockquote>
-                        <strong>Note donnée par {{ comment.author.fullName }} : </strong>
+                        <strong>Note donnée : </strong>
                         {# with permet de passer un tableau de paramètre {'param1': val1, 'param2': val2, ...} #}
                         {% include 'partials/rating.html.twig' with { 'rating': comment.rating } %}
                     </div>

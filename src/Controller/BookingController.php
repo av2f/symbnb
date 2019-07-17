@@ -56,14 +56,32 @@ class BookingController extends AbstractController
      * Permet d'afficher la page d'une réservation
      * 
      * @Route("/booking/{id}", name="booking_show")
-     *
+     * @param Request $request
+     * @param ObjectManager $manager
      * @param Booking $booking
      * @return Response
      */
-    public function show(Booking $booking){
+    public function show(Booking $booking, Request $request, ObjectManager $manager){
         $comment=new Comment();
         
         $form=$this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            // relier le commentaire à l'annonce et à l'utilisateut
+            $comment->setAd($booking->getAd())
+                    ->setAuthor($this->getUser());
+
+            $manager->persist($comment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Votre commentaire a bien été pris en compte!"
+            );
+
+        }
 
         return $this->render('booking/show.html.twig', [
             'booking' => $booking,

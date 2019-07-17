@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use Cocur\Slugify\Slugify;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdRepository")
@@ -115,6 +116,29 @@ class Ad
         }
     }
 
+    /**
+     * Permet de récupérer le commentaire d'un auteur par rapport à une annonce
+     * 
+     * @param User $author
+     * @return Comment|null
+     */
+    
+    public function getCommentFromAuthor(User $author){
+        foreach($this->comments as $comment){
+            if($comment->getAuthor() === $author) return $comment;
+        }
+
+        return null;
+    }
+
+    
+    /**
+     * 
+     * Permet d'obtenir la moyenne globale des notes pour cette annonce
+     * 
+     * @return float
+     *
+     */
     public function getAvgRatings(){
         // Calculer la somme des notations
         // array_reduce réduit iterativement un tableau, toArray() permet de convertir
