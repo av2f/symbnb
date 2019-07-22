@@ -1,0 +1,21 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Modification de la réservation {{ booking.id }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-5">Modification de la réservation N°{{ booking.id }}</h1>
+
+        {{ form_start(form) }}
+       
+        {{ form_row(form) }}
+
+        <button type="submit" class="btn btn-primary mt-3">
+                        <i class="fas fa-check"></i>
+                        Enregistrer les modifications
+        </button>
+
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}
