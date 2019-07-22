@@ -40,6 +40,21 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                <a class="page-link" href="#">&laquo;</a>
+                </li>
+                {% for i in 1..pages %}
+                <li class="page-item active">
+                <a class="page-link" href="#">{{ i }}</a>
+                </li>
+                {% endfor %}
+                <li class="page-item">
+                <a class="page-link" href="#">&raquo;</a>
+                </li>
+            </ul>
+        </div>
 
     </div>
 {% endblock %}
