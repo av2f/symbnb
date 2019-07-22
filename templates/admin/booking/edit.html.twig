@@ -8,12 +8,22 @@
 
         {{ form_start(form) }}
        
-        {{ form_row(form) }}
-
-        <button type="submit" class="btn btn-primary mt-3">
+        <div class="row">
+            <div class="col">
+                {{ form_row(form.startDate) }}
+                {{ form_row(form.endDate) }}
+                {{ form_row(form.comment) }}
+            </div>
+            <div class="col">
+                {{ form_row(form.booker) }}
+                {{ form_row(form.ad) }}
+                <button type="submit" class="btn btn-primary mt-3">
                         <i class="fas fa-check"></i>
                         Enregistrer les modifications
-        </button>
+                </button>
+            </div>
+
+        </div>
 
         {{ form_end(form) }}
 

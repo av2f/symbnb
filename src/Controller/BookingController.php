@@ -23,6 +23,8 @@ class BookingController extends AbstractController
     {
         $booking=new Booking();
         $form=$this->createForm(BookingType::class, $booking);
+        // dans le formulaire, il a été ajouté les validation_groups
+        // au niveau de la fonction configureOptions()
         
         $form->handleRequest($request);
         

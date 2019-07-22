@@ -40,8 +40,11 @@ class Booking
      * )
      * @Assert\GreaterThan(
      * "today",
-     * message="La date d'arrivée doit être ultérieure à la date d'aujourd'hui"
+     * message="La date d'arrivée doit être ultérieure à la date d'aujourd'hui",
+     * groups={"front"}
      * )
+     * Groups permet de définir pour quel validation_groups défini dans le controller cette
+     * règle s'applique
      */
     private $startDate;
 
@@ -76,6 +79,7 @@ class Booking
      * Callback à chaque fois que l'on créé une réservation
      * 
      * @ORM\prePersist()
+     * @ORM\preUpdate()
      *
      * @return void
      */
