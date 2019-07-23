@@ -7,6 +7,7 @@ use App\Repository\AdRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\PaginationService;
 
 class AdminAdController extends AbstractController
 {
@@ -14,7 +15,7 @@ class AdminAdController extends AbstractController
      * requirement <> le ? indique optionnel et par defaut page 1
      * @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_index")
      */
-    public function index(AdRepository $repo, $page)
+    public function index(AdRepository $repo, $page, PaginationService $pagination)
     {
         // Méthode find : permet de retrouver un enregistrement par son identifiant
         // $ad->$repo->find(132)
@@ -27,15 +28,11 @@ class AdminAdController extends AbstractController
         Pour la pagination : on prend les 5 premières annonces à partir de 0
         $ad->$repo->findBy([],[],5,0) */
         
-        $limit=10;
-        $start=$page*$limit-$limit;
-        $total=count($repo->findAll());
-        $pages=ceil($total/$limit); // ceil=arrondi au-dessus
+        $pagination->setEntityClass(Ad::class)
+                    ->setPage($page);
 
         return $this->render('admin/ad/index.html.twig', [
-            'ads' => $repo->findBy([],[],$limit,$start),
-            'pages' => $pages,
-            'page' => $page
+            'pagination' => $pagination
         ]);
     }
 
