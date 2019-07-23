@@ -34,7 +34,7 @@ class AdminBookingController extends AbstractController
     /**
      * Formulaire d'édition de réservation
      * 
-     * @Route("/admin/bookings/{id}/edit", name="admin_bookings_edit")
+     * @Route("/admin/bookings/{id}/edit", name="admin_bookings_edit") 
      *
      * @return Response
      */
