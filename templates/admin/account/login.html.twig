@@ -5,8 +5,9 @@
         <title>Connexion à l'administration</title>
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <meta http-equiv="X-UA-Compatible" content="ie-edge">
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/app.css">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('css/app') }}
+        {% endblock %}
         <style>
             body {
                 display: flex;
@@ -59,11 +60,10 @@
                 </div>
             </div>
         </div>
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/dbd522f0ef.js"></script>
-        
+        {% block javascripts %}
+            {{ encore_entry_script_tags('js/app') }}
+        {% endblock %}
     </body>
 </html>
 

@@ -6,9 +6,9 @@
 
         <meta name="viewport" content="width=device-width, user-scalable=no">
 
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/app.css">
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('css/app') }}
+        {% endblock %}
     </head>
     <body>
         
@@ -18,10 +18,9 @@
 
         {% include 'admin/partials/footer.html.twig' %}
 
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/popper.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/dbd522f0ef.js"></script>
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('js/app') }}
+        {% endblock %}
     </body>
 </html>
